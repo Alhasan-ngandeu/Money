@@ -386,6 +386,7 @@ header {
         -10px -10px 20px rgba(50, 50, 50, 0.1);  
     transition: all 0.3s ease;  
     overflow: hidden;  
+    -webkit-tap-highlight-color: transparent; /* Désactive la couleur de surbrillance sur les appareils tactiles */
 }  
 
 .trophy-button:hover {  
@@ -396,6 +397,8 @@ header {
 }  
 
 .trophy-button:active {  
+    border: none; /* Supprime la bordure */
+    outline: none; /* Supprime le contour */
     transform: scale(0.95);  
     box-shadow:   
         5px 5px 15px rgba(0, 0, 0, 0.3),  
@@ -455,6 +458,25 @@ header {
     width: 200%;  
     height: 200%;  
     opacity: 1;  
+}
+
+.trophy-button:focus {
+    outline: none; /* Supprime le contour lorsque le bouton est focalisé */
+}
+
+.mini-trophy {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(145deg, #FFD700, #FFA500);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    pointer-events: none;
 }
 
 .bottom-nav-enhanced {  
@@ -743,11 +765,13 @@ header {
     cursor: pointer;  
     transition: all 0.3s ease;  
     box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);  
+    outline: none;
 }  
 
 .play-btn:hover {  
     transform: scale(1.1);  
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);   
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5); 
+    outline: none;  
 }  
 
 /* Modal Styles */  
@@ -1020,3 +1044,30 @@ header {
     font-size: 0.8em;  
     margin-top: 5px;  
 }
+
+/* Ajoutez cette règle pour désactiver la surbrillance sur tous les éléments interactifs */
+a, button, .nav-item-enhanced, .trophy-button, .settings-icon-enhanced, .language-btn, .play-btn {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Si vous voulez être plus spécifique, vous pouvez ajouter cette règle à chaque classe concernée */
+.nav-item-enhanced {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.trophy-button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.settings-icon-enhanced {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.language-btn {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.play-btn {
+    -webkit-tap-highlight-color: transparent;
+}
+
