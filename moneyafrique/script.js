@@ -6,6 +6,54 @@ document.addEventListener('DOMContentLoaded', function() {
     const languageModal = document.getElementById('languageModal');
     const languageButtons = document.querySelectorAll('.language-btn');
     const trophyBtn = document.getElementById('trophyBtn');
+    let isTapping = false;
+    let tapInterval;
+    let lastAdTime = 0;
+    const adInterval = 5000; // 5 secondes en millisecondes
+    // Fonction pour démarrer le tapotement continu
+    function startTapping() {
+        isTapping = true;
+        let tapCount = 0;
+        
+        // Incrémenter le solde immédiatement au premier tap
+        updateBalance(0.5);
+        createMiniTrophyButtons();
+        
+        // Démarrer l'intervalle pour les taps suivants
+        tapInterval = setInterval(() => {
+            if (isTapping) {
+                updateBalance(0.5);
+                createMiniTrophyButtons();
+                tapCount++;
+                
+                // Vérifier si on doit montrer une pub (toutes les 5 secondes)
+                const currentTime = Date.now();
+                if (currentTime - lastAdTime >= adInterval) {
+                    showAd();
+                    lastAdTime = currentTime;
+                }
+            }
+        }, 300); // Intervalle entre chaque incrément de 0.5 FCFA
+    }
+
+    // Fonction pour arrêter le tapotement
+    function stopTapping() {
+        isTapping = false;
+        clearInterval(tapInterval);
+    }
+
+    // Fonction pour afficher la pub
+    function showAd() {
+        window.open('https://www.profitableratecpm.com/csrntvybv?key=9f625012d009fefceb8726b994155df2', '_blank');
+    }
+
+    // Fonction pour mettre à jour le solde
+    function updateBalance(amount) {
+        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
+        const newBalance = currentBalance + amount;
+        localStorage.setItem('balance', newBalance);
+        updateBalanceDisplay();
+    }
 
     function handleNavigationWithAd(linkId, event) {
         event.preventDefault();
@@ -170,24 +218,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle trophy button click
     // Handle trophy button click
-    trophyBtn.addEventListener('click', function(e) {
-        e.preventDefault();
+    // Gestion du tapotement continu
+trophyBtn.addEventListener('mousedown', startTapping);
+trophyBtn.addEventListener('touchstart', startTapping);
 
-        // Increment balance
-        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-        const newBalance = currentBalance + 0.5;
-        localStorage.setItem('balance', newBalance);
-        updateBalanceDisplay();
-
-        // Add ripple effect
-        this.classList.add('ripple');
-        this.addEventListener('animationend', function() {
-            this.classList.remove('ripple');
-        }, { once: true });
-
-        // Create mini trophy buttons
-        createMiniTrophyButtons();
-    });
+trophyBtn.addEventListener('mouseup', stopTapping);
+trophyBtn.addEventListener('mouseleave', stopTapping);
+trophyBtn.addEventListener('touchend', stopTapping);
 
     function createMiniTrophyButtons() {
         const trophyBtnRect = trophyBtn.getBoundingClientRect();
