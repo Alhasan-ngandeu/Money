@@ -7,6 +7,22 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
     const shareBtn = document.getElementById('shareBtn');
 
+    function handleNavigationWithAd(linkId, event) {
+        event.preventDefault();
+        
+        // Ouvrir la pub dans un nouvel onglet
+        window.open('https://www.profitableratecpm.com/csrntvybv?key=9f625012d009fefceb8726b994155df2', '_blank');
+        
+        // Ouvrir la page demandée après un petit délai
+        setTimeout(() => {
+            window.location.href = document.getElementById(linkId).getAttribute('href');
+        }, 100);
+        
+        // Mettre à jour la classe active
+        document.querySelectorAll('.nav-item-enhanced').forEach(item => item.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
+
     // Initialisation du solde et de l'ID utilisateur
     let userBalance = parseFloat(localStorage.getItem('balance')) || 0;
     const userId = localStorage.getItem('userId') || `user_${Date.now()}`;
@@ -180,16 +196,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Gestion du visionnage des publicités
-    function handleWatchAd(button) {
-        button.disabled = true;
-        button.textContent = "Revenez dans 24h pour regarder une nouvelle publicité";
-
-        setTimeout(() => {
-            userBalance += TASK_POINTS.AD_WATCH;
-            updateBalanceDisplay();
-            showCustomPopup(`+${TASK_POINTS.AD_WATCH} FCFA pour avoir regardé la publicité`);
-            localStorage.setItem(button.id, Date.now());
-        }, 2000);
+    function handleWatchAd(button) {  
+        button.disabled = true;  
+        button.textContent = "Revenez dans 24h pour regarder une nouvelle publicité";  
+    
+        setTimeout(() => {  
+            userBalance += TASK_POINTS.AD_WATCH;  
+            updateBalanceDisplay();  
+            showCustomPopup(`+${TASK_POINTS.AD_WATCH} FCFA pour avoir regardé la publicité`);  
+            localStorage.setItem(button.id, Date.now());  
+    
+            // Redirection après 2 secondes  
+            window.location.href = button.dataset.redirectUrl;  
+        }, 2000);  
     }
 
     // Gestion du partage
@@ -259,23 +278,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const navItems = document.querySelectorAll('.nav-item-enhanced');  
 
-    navItems.forEach(item => {  
-        item.addEventListener('click', function(event) {  
-            // Supprime la classe 'active' de tous les éléments .nav-item-enhanced  
-            navItems.forEach(item => item.classList.remove('active'));  
-
-            // Ajoute la classe 'active' à l'élément cliqué  
-            this.classList.add('active');  
-        });  
-    });  
+    document.getElementById('taperLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('taperLink', e);
+    });
+    
+    document.getElementById('tasksLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('tasksLink', e);
+    });
+    
+    document.getElementById('minigameLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('minigameLink', e);
+    });
+    
+    document.getElementById('withdrawLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('withdrawLink', e);
+    }); 
 
     // Définir l'élément actif basé sur la page actuelle  
     const path = window.location.pathname;  
 
     function setActiveLink(linkId) {  
         navItems.forEach(item => item.classList.remove('active'));  
-        document.getElementById(linkId).classList.add('active');  
-    }  
+        document.querySelector(`#${linkId}`).parentElement.parentElement.classList.add('active');  
+    }
 
     if (path.includes("index.html") || path === "/") {  
         setActiveLink("taperBtn");  

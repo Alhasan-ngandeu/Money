@@ -6,6 +6,32 @@ document.addEventListener('DOMContentLoaded', function() {
     let balance = parseFloat(localStorage.getItem('balance')) || 0; // Récupérer balance
     let currentGame; // Variable pour suivre le jeu actuel
 
+    function handleNavigationWithAd(linkId, event) {
+        event.preventDefault();
+        
+        // Ouvrir la pub dans un nouvel onglet
+        window.open('https://www.profitableratecpm.com/csrntvybv?key=9f625012d009fefceb8726b994155df2', '_blank');
+        
+        // Ouvrir la page demandée après un petit délai
+        setTimeout(() => {
+            window.location.href = document.getElementById(linkId).getAttribute('href');
+        }, 100);
+        
+        // Mettre à jour la classe active
+        document.querySelectorAll('.nav-item-enhanced').forEach(item => item.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
+
+    function handleGameStart(gameFunction) {
+        // Ouvrir la pub dans un nouvel onglet
+        window.open('https://www.profitableratecpm.com/csrntvybv?key=9f625012d009fefceb8726b994155df2', '_blank');
+        
+        // Lancer le jeu après un petit délai
+        setTimeout(() => {
+            gameFunction();
+        }, 100);
+    }
+
     // Fermeture du modal
     closeBtn.addEventListener('click', () => {
         gameModal.style.display = 'none';
@@ -237,23 +263,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const navItems = document.querySelectorAll('.nav-item-enhanced');  
 
-    navItems.forEach(item => {  
-        item.addEventListener('click', function(event) {  
-            // Supprime la classe 'active' de tous les éléments .nav-item-enhanced  
-            navItems.forEach(item => item.classList.remove('active'));  
-
-            // Ajoute la classe 'active' à l'élément cliqué  
-            this.classList.add('active');  
-        });  
-    });  
+    document.getElementById('taperLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('taperLink', e);
+    });
+    
+    document.getElementById('tasksLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('tasksLink', e);
+    });
+    
+    document.getElementById('minigameLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('minigameLink', e);
+    });
+    
+    document.getElementById('withdrawLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('withdrawLink', e);
+    });
 
     // Définir l'élément actif basé sur la page actuelle  
     const path = window.location.pathname;  
 
     function setActiveLink(linkId) {  
         navItems.forEach(item => item.classList.remove('active'));  
-        document.getElementById(linkId).classList.add('active');  
-    }  
+        document.querySelector(`#${linkId}`).parentElement.parentElement.classList.add('active');  
+    }
 
     if (path.includes("index.html") || path === "/") {  
         setActiveLink("taperBtn");  
@@ -264,5 +296,8 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (path.includes("retrait.html")) {  
         setActiveLink("withdrawBtn");  
     }
+
+    // À la fin de votre fichier jeux.js, après toutes les autres fonctions
+    window.handleGameStart = handleGameStart;
 
 });

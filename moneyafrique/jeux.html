@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MONEY AFRIQUE - Mini-jeux</title>
+    <title>AFRIQUE MONEY - Mini-jeux</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>MONEY AFRIQUE</h1>
+            <h1>AFRIQUE MONEY</h1>
             <div class="header-icons">
                 <i class="fas fa-ellipsis-vertical"></i>
                 <i class="fas fa-times"></i>
@@ -49,28 +49,26 @@
         </div>
 
         <!-- Section des mini-jeux -->
-        <div class="mini-games-container">
-            <h1>Mini-jeux</h1>
-            <div class="game-card" id="memoryGame">
-                <i class="fas fa-brain game-icon"></i>
-                <h3>Memory Game</h3>
-                <p class="game-description">Testez votre mémoire en trouvant les paires correspondantes</p>
-                <button class="play-btn" onclick="startMemoryGame()">Jouer</button>
-            </div>
-            
-            <div class="game-card" id="quickMath">
-                <i class="fas fa-calculator game-icon"></i>
-                <h3>Quick Math</h3>
-                <p class="game-description">Résolvez rapidement des calculs mathématiques</p>
-                <button class="play-btn" onclick="startQuickMath()">Jouer</button>
-            </div>
+        <!-- Dans votre jeux.html, modifiez les boutons comme ceci -->
+        <div class="game-card" id="memoryGame">
+            <i class="fas fa-brain game-icon"></i>
+            <h3>Memory Game</h3>
+            <p class="game-description">Testez votre mémoire en trouvant les paires correspondantes</p>
+            <button class="play-btn" onclick="handleGameStart(startMemoryGame)">Jouer</button>
+        </div>
 
-            <div class="game-card" id="colorMatch">
-                <i class="fas fa-palette game-icon"></i>
-                <h3>Color Match</h3>
-                <p class="game-description">Associez rapidement les bonnes couleurs</p>
-                <button class="play-btn" onclick="startColorMatch()">Jouer</button>
-            </div>
+        <div class="game-card" id="quickMath">
+            <i class="fas fa-calculator game-icon"></i>
+            <h3>Quick Math</h3>
+            <p class="game-description">Résolvez rapidement des calculs mathématiques</p>
+            <button class="play-btn" onclick="handleGameStart(startQuickMath)">Jouer</button>
+        </div>
+
+        <div class="game-card" id="colorMatch">
+            <i class="fas fa-palette game-icon"></i>
+            <h3>Color Match</h3>
+            <p class="game-description">Associez rapidement les bonnes couleurs</p>
+            <button class="play-btn" onclick="handleGameStart(startColorMatch)">Jouer</button>
         </div>
         
         <div class="modal" id="gameModal">  
@@ -141,6 +139,8 @@
             </div>
         </nav>
     </div>
+    <script type='text/javascript' src='//pl25849333.effectiveratecpm.com/99/75/19/9975198c2ddc2403f462bce32d94f680.js'></script>
+
 
     <script src="script.js"></script>
     <script src="jeux.js"></script>

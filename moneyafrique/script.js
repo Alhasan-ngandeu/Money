@@ -7,6 +7,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const languageButtons = document.querySelectorAll('.language-btn');
     const trophyBtn = document.getElementById('trophyBtn');
 
+    function handleNavigationWithAd(linkId, event) {
+        event.preventDefault();
+        
+        // Ouvrir la pub dans un nouvel onglet
+        window.open('https://www.profitableratecpm.com/csrntvybv?key=9f625012d009fefceb8726b994155df2', '_blank');
+        
+        // Ouvrir la page demandée après un petit délai
+        setTimeout(() => {
+            window.location.href = document.getElementById(linkId).getAttribute('href');
+        }, 100);
+        
+        // Mettre à jour la classe active
+        document.querySelectorAll('.nav-item-enhanced').forEach(item => item.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
+
     // Récupérer l'ID utilisateur
     const userId = localStorage.getItem('userId') || `user_${Date.now()}`;
     localStorage.setItem('userId', userId);
@@ -153,19 +169,66 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Handle trophy button click
+    // Handle trophy button click
     trophyBtn.addEventListener('click', function(e) {
         e.preventDefault();
 
+        // Increment balance
         const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
         const newBalance = currentBalance + 0.5;
         localStorage.setItem('balance', newBalance);
         updateBalanceDisplay();
 
+        // Add ripple effect
         this.classList.add('ripple');
         this.addEventListener('animationend', function() {
             this.classList.remove('ripple');
         }, { once: true });
+
+        // Create mini trophy buttons
+        createMiniTrophyButtons();
     });
+
+    function createMiniTrophyButtons() {
+        const trophyBtnRect = trophyBtn.getBoundingClientRect();
+        const trophyBtnCenterX = trophyBtnRect.left + trophyBtnRect.width / 2;
+        const trophyBtnCenterY = trophyBtnRect.top + trophyBtnRect.height / 2;
+
+        // Number of mini trophies to create (you can adjust this)
+        const numberOfMiniTrophies = 5;
+
+        for (let i = 0; i < numberOfMiniTrophies; i++) {
+            const miniTrophy = document.createElement('div');
+            miniTrophy.className = 'mini-trophy';
+            miniTrophy.style.position = 'absolute';
+            miniTrophy.style.left = `${trophyBtnCenterX}px`;
+            miniTrophy.style.top = `${trophyBtnCenterY}px`;
+            miniTrophy.style.transform = 'translate(-50%, -50%)';
+            miniTrophy.innerHTML = '<i class="fas fa-trophy"></i>';
+
+            document.body.appendChild(miniTrophy);
+
+            // Randomize the position and animation
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 100 + Math.random() * 50;
+            const targetX = trophyBtnCenterX + Math.cos(angle) * distance;
+            const targetY = trophyBtnCenterY + Math.sin(angle) * distance;
+
+            miniTrophy.animate([
+                { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 },
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                { transform: `translate(${targetX - trophyBtnCenterX}px, ${targetY - trophyBtnCenterY}px) scale(0.5)`, opacity: 0 }
+            ], {
+                duration: 2000,
+                easing: 'ease-out'
+            });
+
+            // Remove the mini trophy after the animation
+            setTimeout(() => {
+                miniTrophy.remove();
+            }, 2000);
+        }
+    }
 
     // Vérifier les mises à jour du solde toutes les secondes
     setInterval(updateBalanceDisplay, 1000);
@@ -272,23 +335,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const navItems = document.querySelectorAll('.nav-item-enhanced');  
 
-    navItems.forEach(item => {  
-        item.addEventListener('click', function(event) {  
-            // Supprime la classe 'active' de tous les éléments .nav-item-enhanced  
-            navItems.forEach(item => item.classList.remove('active'));  
+    document.getElementById('taperLink').addEventListener('click', function(e) {
+    handleNavigationWithAd('taperLink', e);
+    });
 
-            // Ajoute la classe 'active' à l'élément cliqué  
-            this.classList.add('active');  
-        });  
-    });  
+    document.getElementById('tasksLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('tasksLink', e);
+    });
+
+    document.getElementById('minigameLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('minigameLink', e);
+    });
+
+    document.getElementById('withdrawLink').addEventListener('click', function(e) {
+        handleNavigationWithAd('withdrawLink', e);
+    }); 
 
     // Définir l'élément actif basé sur la page actuelle  
     const path = window.location.pathname;  
 
     function setActiveLink(linkId) {  
-        navItems.forEach(item => item.classList.remove('active'));  
-        document.getElementById(linkId).classList.add('active');  
-    }  
+    navItems.forEach(item => item.classList.remove('active'));  
+    document.querySelector(`#${linkId}`).parentElement.parentElement.classList.add('active');  
+}
 
     if (path.includes("index.html") || path === "/") {  
         setActiveLink("taperBtn");  
@@ -300,4 +369,32 @@ document.addEventListener('DOMContentLoaded', function() {
         setActiveLink("withdrawBtn");  
     }
 
+    // Variables pour gérer la pub
+    let lastAdShownTime = 0;
+    const adCooldown = 2 * 60 * 1000; // 5 minutes en millisecondes
+
+    document.getElementById('trophyBtn').addEventListener('click', function() {
+        const currentTime = new Date().getTime();
+        
+        // Ajoute 0.5 FCFA à chaque clic
+        updateBalance(0.5);
+        
+        // Vérifie si on peut montrer la pub (première fois ou après cooldown)
+        if (lastAdShownTime === 0 || (currentTime - lastAdShownTime) > adCooldown) {
+            window.open('https://www.effectiveratecpm.com/bqpd44svb?key=8353a845989f690774f8bb35927897ab', '_blank');
+            lastAdShownTime = currentTime;
+            
+            // Stocke le moment où la pub a été vue (persistant)
+            localStorage.setItem('lastAdShownTime', lastAdShownTime);
+        }
+    });
+
+    // Au chargement de la page, récupère le dernier moment où la pub a été vue
+    window.addEventListener('load', function() {
+        const storedTime = localStorage.getItem('lastAdShownTime');
+        if (storedTime) {
+            lastAdShownTime = parseInt(storedTime);
+        }
+    });
+    
 });
