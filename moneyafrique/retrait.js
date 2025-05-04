@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Navigation entre les pages  
     taperBtn.addEventListener('click', function() {  
-        window.location.href = 'taper.html';  
+        window.location.href = 'index.html';  
     });  
 
     tasksBtn.addEventListener('click', function() {  
